@@ -65,3 +65,10 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
     // Deliver the notification
     notify(NOTIFICATION_ID, builder.build())
 }
+
+/**
+ * cancel all notification
+ */
+fun NotificationManager.cancelNotification() {
+    cancelAll()
+}
