@@ -50,6 +50,21 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
         PendingIntent.FLAG_UPDATE_CURRENT
     )
 
+    // Bitmap image to show at the notification.
+    val eggImage = BitmapFactory.decodeResource(
+        applicationContext.resources,
+        R.drawable.cooked_egg
+    )
+    val bigPicStyle = NotificationCompat.BigPictureStyle()
+        .bigPicture(eggImage)
+        .bigLargeIcon(null)
+
+    val snoozeIntent = Intent(applicationContext, SnoozeReceiver::class.java)
+    val snoozePendingIntent: PendingIntent = PendingIntent.getBroadcast(
+        applicationContext, REQUEST_CODE,
+        snoozeIntent, FLAGS
+    )
+
     // Create an instance of NotificationCompat.Builder
     val builder = NotificationCompat.Builder(
         applicationContext,
@@ -59,8 +74,16 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
         .setContentTitle(applicationContext.getString(R.string.notification_title))
         .setContentText(messageBody)
         .setContentIntent(contentPendingIntent)
-        // when the user tap on the notification, the notification dismisses it self
+        // when the user tap on the notification, the notification dismisses it self.
         .setAutoCancel(true)
+        // Set style and image for notification.
+        .setStyle(bigPicStyle)
+        .setLargeIcon(eggImage)
+        // Add action to the notification.
+        .addAction(
+            R.drawable.egg_icon,
+            applicationContext.getString(R.string.snooze),
+            snoozePendingIntent)
 
     // Deliver the notification
     notify(NOTIFICATION_ID, builder.build())
