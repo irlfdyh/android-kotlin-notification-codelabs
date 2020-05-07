@@ -38,6 +38,18 @@ private val FLAGS = 0
  */
 fun NotificationManager.sendNotification(messageBody: String, applicationContext: Context) {
 
+    // Create the content intent for the notification.
+    val contentIntent = Intent(applicationContext, MainActivity::class.java)
+
+    // Create pending intent to handle user click action at the notification, in this
+    // case, the pending intent will bring user to MainActivity.
+    val contentPendingIntent = PendingIntent.getActivity(
+        applicationContext,
+        NOTIFICATION_ID,
+        contentIntent,
+        PendingIntent.FLAG_UPDATE_CURRENT
+    )
+
     // Create an instance of NotificationCompat.Builder
     val builder = NotificationCompat.Builder(
         applicationContext,
@@ -46,6 +58,9 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
         .setSmallIcon(R.drawable.cooked_egg)
         .setContentTitle(applicationContext.getString(R.string.notification_title))
         .setContentText(messageBody)
+        .setContentIntent(contentPendingIntent)
+        // when the user tap on the notification, the notification dismisses it self
+        .setAutoCancel(true)
 
     // Deliver the notification
     notify(NOTIFICATION_ID, builder.build())
