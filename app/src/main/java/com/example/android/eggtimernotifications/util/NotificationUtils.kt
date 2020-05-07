@@ -84,6 +84,7 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
             R.drawable.egg_icon,
             applicationContext.getString(R.string.snooze),
             snoozePendingIntent)
+        .setPriority(NotificationCompat.PRIORITY_HIGH)
 
     // Deliver the notification
     notify(NOTIFICATION_ID, builder.build())
